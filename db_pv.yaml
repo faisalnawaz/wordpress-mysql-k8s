@@ -6,7 +6,7 @@ metadata:
     app: wordpressapp
     tier: database
 spec:
-  storageClassName: local-storage
+  #storageClassName: local-storage
   accessModes:
     - ReadWriteMany
   capacity:
