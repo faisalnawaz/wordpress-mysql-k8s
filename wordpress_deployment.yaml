@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: wordpressapp-web
+  labels:
+    app: wordpressapp
+    tier: web
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: wordpressapp
+      tier: web
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: wordpressapp
+        tier: web
+    spec:
+      containers:
+        - name: wordpress
+          image: wordpress
+          ports:
+            - containerPort: 80
+          env:
+            - name: WORDPRESS_DB_HOST
+              valueFrom:
+                  secretKeyRef:
+                      name: wp-web-cred
+                      key: WORDPRESS_DB_HOST
+            - name: WORDPRESS_DB_NAME
+              valueFrom:
+                  secretKeyRef:
+                      name: wp-web-cred
+                      key: WORDPRESS_DB_NAME
+            - name: WORDPRESS_DB_USER
+              valueFrom:
+                  secretKeyRef:
+                      name: wp-web-cred
+                      key: WORDPRESS_DB_USER
+            - name: WORDPRESS_DB_PASSWORD
+              valueFrom:
+                  secretKeyRef:
+                      name: wp-web-cred
+                      key: WORDPRESS_DB_PASSWORD            
+          volumeMounts:
+          - mountPath: /var/www/html
+            name: wordpressapp-web-volume
+      volumes:
+        - name: wordpressapp-web-volume
+          persistentVolumeClaim:
+            claimName: wordpressapp-web-pvc
+
+
