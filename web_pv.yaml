@@ -13,7 +13,7 @@ spec:
     storage: 50Mi
   hostPath:
     path: /home/faisal/Documents/kubernetes/assignement1_wordpress_deployment/pv_folder
-    type: Directory
+    type: DirectoryOrCreate
 
 # For EBs Volume
   # awsElasticBlockStore:
